@@ -88,28 +88,42 @@ var thirdDinosaurJSON = function(){
 // }; // end dinoGetter()
 
 
-// This is the way
-var dinoGetter = function() {
-	firstDinosaurJSON().then(function(results) {
-		results.forEach(function(dino){
-			dinosaurs.push(dino);
-		});
-		return secondDinosaurJSON();
-		 // End 1st, begin second
-	}).then(function(results2) {
-		results2.forEach(function(dino){
-			dinosaurs.push(dino);
-		});
-	return thirdDinosaurJSON();
-	 // end 2nd, begin 3rd
-	}).then(function(results3) {
-		results3.forEach(function(dino){
-			dinosaurs.push(dino);
-		});
-		makeDinos();
-	});
-	// end 3rd
-};
+// // This is the way
+// var dinoGetter = function() {
+// 	firstDinosaurJSON().then(function(results) {
+// 		results.forEach(function(dino){
+// 			dinosaurs.push(dino);
+// 		});
+// 		return secondDinosaurJSON();
+// 		 // End 1st, begin second
+// 	}).then(function(results2) {
+// 		results2.forEach(function(dino){
+// 			dinosaurs.push(dino);
+// 		});
+// 	return thirdDinosaurJSON();
+// 	 // end 2nd, begin 3rd
+// 	}).then(function(results3) {
+// 		results3.forEach(function(dino){
+// 			dinosaurs.push(dino);
+// 		});
+// 		makeDinos();
+// 	});
+// 	// end 3rd
+// };
+
+// // The fun and easy but not-to-common way
+// var dinoGetter = function() {
+// 	Promise.all([firstDinosaurJSON(), secondDinosaurJSON(), thirdDinosaurJSON()]).then(function(results) {
+// 		results.forEach(function(result){
+// 			result.forEach(function(dino) {
+// 				dinosaurs.push(dino);
+// 			}); // loop through once
+// 		}); // loop-d-loop
+// 		makeDinos();
+// 	}).catch(function(error){
+// 		console.log("Error from Promise.all", error);
+// 	});
+// };
 
 var makeDinos = function() {
 	dinosaurs.forEach(function(dino) {
@@ -123,7 +137,7 @@ var makeDinos = function() {
 
 
 var initializer = function() {
-	dinoGetter();
+	// dinoGetter();
 };
 
 var getDinosaurs = function() {
