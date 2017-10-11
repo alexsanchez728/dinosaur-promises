@@ -2,7 +2,7 @@
 
 const dom = require("./dom");
 
-const dinosaurs = [];
+let dinosaurs = [];
 
 const firstDinosaurJSON = () => {
 	return new Promise((resolve, reject) => {
