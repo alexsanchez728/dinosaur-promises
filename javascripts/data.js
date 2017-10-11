@@ -1,146 +1,65 @@
 "use strict";
 
-var dom = require("./dom");
+const dom = require("./dom");
 
-var dinosaurs = [];
+const dinosaurs = [];
 
-	// The old way of calling - the pyramid of doom
-// var dinoGetter = function() {
-// 	$.get("./db/dinosaurs1.json").done(function(data1){
-// 		console.log("data1", data1);
-// 		data1.dinosaurs1.forEach(function(dino){
-// 			dinosaurs.push(dino);
-// 		}); //End 1
-// 		$.get("./db/dinosaurs2.json").done(function(data2){
-// 			console.log("data2", data2);
-// 			data2.dinosaurs2.forEach(function(dino){
-// 				dinosaurs.push(dino);
-// 			}); // End 2
-// 				$.get("./db/dinosaurs3.json").done(function(data3){
-// 					console.log("data3", data3);
-// 					data3.dinosaurs3.forEach(function(dino){
-// 						dinosaurs.push(dino);
-// 				}); // End 3
-// 				console.log("dinosaurs array after for each", dinosaurs);
-// 			});
-// 		});
-// 	});
-// };
-
-var firstDinosaurJSON = function(){
-	return new Promise(function(resolve, reject){
-		$.ajax("./db/dinosaurs1.json").done(function(data1){
+const firstDinosaurJSON = () => {
+	return new Promise((resolve, reject) => {
+		$.ajax("./db/dinosaurs1.json").done((data1) => {
 			resolve(data1.dinosaurs1);
-		}).fail(function(error1){
+		}).fail((error1) => {
 			reject(error1);
 		});
 	});
 };
 
 
-var secondDinosaurJSON = function(){
-	return new Promise(function(resolve, reject){
-		$.ajax("./db/dinosaurs2.json").done(function(data2){
+const secondDinosaurJSON = () => {
+	return new Promise((resolve, reject) => {
+		$.ajax("./db/dinosaurs2.json").done((data2) => {
 			resolve(data2.dinosaurs2);
-		}).fail(function(error2){
+		}).fail((error2) => {
 			reject(error2);
 		});
 	});
 };
 
-var thirdDinosaurJSON = function(){
-	return new Promise(function(resolve, reject){
-		$.ajax("./db/dinosaurs3.json").done(function(data3){
+const thirdDinosaurJSON = () => {
+	return new Promise((resolve, reject) => {
+		$.ajax("./db/dinosaurs3.json").done((data3) => {
 			resolve(data3.dinosaurs3);
-		}).fail(function(error3){
+		}).fail((error3) => {
 			reject(error3);
 		});
 	});
 };
 
-// // The Promise pyramid of D00M
+// The fun and easy but not-to-common way
+const dinoGetter = () => {
+	Promise.all([firstDinosaurJSON(), secondDinosaurJSON(), thirdDinosaurJSON()]).then((results) => {
+		results.forEach((result) => {
+			result.forEach((dino) => {
+				dinosaurs.push(dino);
+			}); // loop through once
+		}); // loop-d-loop
+		makeDinos();
+	}).catch((error) => {
+		console.log("Error from Promise.all", error);
+	});
+};
 
-// var dinoGetter = function() {
-// 	// .then for when it resolves,
-// 	// .catch for when it rejects
-// 	firstDinosaurJSON().then(function(results) {
-// 		results.forEach(function(dino){
-// 			dinosaurs.push(dino);
-// 		}); // 1st foreach
-
-// 		secondDinosaurJSON().then(function(results2){
-// 			results2.forEach(function(dino){
-// 			dinosaurs.push(dino);
-// 			}); // 2nd foreach
-
-// 			thirdDinosaurJSON().then(function(results3){
-// 				results3.forEach(function(dino){
-// 				dinosaurs.push(dino);
-// 				}); // 3rd foreach
-
-// 			}); // end 3rd .then()
-// 		}); // end 2nd .then()
-// 	console.log("results from dino1 into dinosaurs", dinosaurs);
-// 	//end 1st .then()
-// 	}).catch(function(error) {
-// 		console.log("error from dino1", error);
-// 	});
-// }; // end dinoGetter()
-
-
-// // This is the way
-// var dinoGetter = function() {
-// 	firstDinosaurJSON().then(function(results) {
-// 		results.forEach(function(dino){
-// 			dinosaurs.push(dino);
-// 		});
-// 		return secondDinosaurJSON();
-// 		 // End 1st, begin second
-// 	}).then(function(results2) {
-// 		results2.forEach(function(dino){
-// 			dinosaurs.push(dino);
-// 		});
-// 	return thirdDinosaurJSON();
-// 	 // end 2nd, begin 3rd
-// 	}).then(function(results3) {
-// 		results3.forEach(function(dino){
-// 			dinosaurs.push(dino);
-// 		});
-// 		makeDinos();
-// 	});
-// 	// end 3rd
-// };
-
-// // The fun and easy but not-to-common way
-// var dinoGetter = function() {
-// 	Promise.all([firstDinosaurJSON(), secondDinosaurJSON(), thirdDinosaurJSON()]).then(function(results) {
-// 		results.forEach(function(result){
-// 			result.forEach(function(dino) {
-// 				dinosaurs.push(dino);
-// 			}); // loop through once
-// 		}); // loop-d-loop
-// 		makeDinos();
-// 	}).catch(function(error){
-// 		console.log("Error from Promise.all", error);
-// 	});
-// };
-
-var makeDinos = function() {
-	dinosaurs.forEach(function(dino) {
+var makeDinos = () => {
+	dinosaurs.forEach((dino) => {
 		dom(dino);
 	});
 };
 
-
-
-
-
-
-var initializer = function() {
-	// dinoGetter();
+var initializer = () => {
+	dinoGetter();
 };
 
-var getDinosaurs = function() {
+var getDinosaurs = () => {
 	return dinosaurs;
 };
 
