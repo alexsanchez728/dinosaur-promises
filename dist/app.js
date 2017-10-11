@@ -36,15 +36,37 @@ const thirdDinosaurJSON = () => {
 	});
 };
 
+const allTheCats = () => {
+	return new Promise((resolve, reject) => {
+		$.ajax("./db/cats.json").done((data4) => {
+			resolve(data4.cats);
+		}).fail((error4) => {
+			reject(error4);
+		});
+	});
+};
+
 // The fun and easy but not-to-common way
 const dinoGetter = () => {
 	Promise.all([firstDinosaurJSON(), secondDinosaurJSON(), thirdDinosaurJSON()]).then((results) => {
-		results.forEach((result) => {
-			result.forEach((dino) => {
-				dinosaurs.push(dino);
-			}); // loop through once
-		}); // loop-d-loop
+		// format all the data how we need it to be before it is sent to be displayed
+		allTheCats().then((catResult) => {
+			results.forEach((result) => {
+				result.forEach((dino) => {
+					dino.cats = [];
+					dino.catIds.forEach((catId) => {
+						catResult.forEach((cat) => {
+							if(cat.id === catId){
+								dino.cats.push(cat);
+							}
+						});
+					});
+					dinosaurs.push(dino);
+				}); // loop through once
+			}); // loop-d-loop
+		console.log("dino", dinosaurs);
 		makeDinos();
+		});
 	}).catch((error) => {
 		console.log("Error from Promise.all", error);
 	});
