@@ -1,5 +1,2 @@
-@import 'variables'; // for scss, ignore the _ and $ when importing
-
-body {
-	background-color: $neutral-color;
-}
+@import 'card';
+@import 'layout';
